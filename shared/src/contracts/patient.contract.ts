@@ -1,13 +1,15 @@
 import {initContract} from '@ts-rest/core';
 import {z} from 'zod';
-import { PatientResponseSchema } from '../models/patient.schema.js';
+import { PatientResponseSchema } from '../schemas/patient.schema.js';
+import {ProblemDetailsSchema} from "../schemas/common.schema.js"
+
 
 const c = initContract();
 
 export const patientContract = c.router({
     getPatients: {
         method: 'GET',
-        path: '/patients',
+        path: '/',
         responses: {
             200: z.array(PatientResponseSchema),
         },
@@ -15,13 +17,16 @@ export const patientContract = c.router({
     },
     getPatient: {
         method: 'GET',
-        path: '/patients/:id',
+        path: '/:id',
         pathParams: z.object({
             id: z.string(),
         }),
         responses: {
             200: PatientResponseSchema,
+            404: ProblemDetailsSchema,
         },
         summary: 'Get a patient by id',
     },
+}, {
+    pathPrefix: "/patients"
 });

@@ -8,9 +8,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "rootDir": "src",
-    "paths": {
-      "@my-app/shared": ["../shared/src/index.ts"]
-    }
+    "paths": {}
   },
   "include": ["src"]
 }

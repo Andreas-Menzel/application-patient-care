@@ -11,11 +11,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "baseUrl": ".",
-    "paths": {
-      "@my-app/shared": [
-        "shared/src/index.ts"
-      ]
-    }
+    "paths": {}
   },
   "include": [
     "src",

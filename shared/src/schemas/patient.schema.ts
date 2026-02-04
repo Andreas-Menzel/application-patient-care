@@ -7,9 +7,9 @@ const PatientSchema = z.object({
     gender: z.enum(["male", "female"]),
 });
 
-export const PatientResponseSchema = PatientSchema;
-export const PatientCreateSchema = PatientSchema.omit({id: true});
-export const PatientUpdateSchema = PatientSchema.omit({id: true}).partial();
+export const PatientResponseSchema = PatientSchema.strict();
+export const PatientCreateSchema = PatientSchema.omit({id: true}).strict();
+export const PatientUpdateSchema = PatientSchema.omit({id: true}).partial().strict();
 
 export type PatientResponse = z.infer<typeof PatientResponseSchema>;
 export type PatientCreate = z.infer<typeof PatientCreateSchema>;

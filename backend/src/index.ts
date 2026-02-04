@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
-import {patientContract, PatientResponse} from "@my-app/shared";
-import { createExpressEndpoints, initServer } from "@ts-rest/express";
+import {apiContract} from "shared";
+import { createExpressEndpoints } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
 import swaggerUi from "swagger-ui-express"
-import { patientRouter } from "./routes/patient.routes.js";
+import { apiRouter } from "./routes/api.routes.js";
 
 const app = express();
 
@@ -13,13 +13,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Basic routes (for testing)
-app.get("/ping", (req, res) => {
-    res.send("pong");
-})
-
 // Attach all routers
-createExpressEndpoints(patientContract, patientRouter, app);
+createExpressEndpoints(apiContract, apiRouter, app);
 // ... auth, etc.
 
 // Serve static files
@@ -27,8 +22,7 @@ const frontendDistPath = path.join(process.cwd(), '../frontend/dist');
 app.use(express.static(frontendDistPath));
 
 // Serve Swagger UI
-// TODO: wrap patientContract in apiContract
-const openApiDocument = generateOpenApi(patientContract, {
+const openApiDocument = generateOpenApi(apiContract, {
     info: {
         title: 'Patient Care API',
         version: '1.0.0',
