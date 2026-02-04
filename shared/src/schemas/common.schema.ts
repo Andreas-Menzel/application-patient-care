@@ -10,3 +10,5 @@ export const ProblemDetailsSchema = z.object({
     detail: z.string().optional(),
     instance: z.string().optional(),
 });
+
+export type ProblemDetails = z.infer<typeof ProblemDetailsSchema>;

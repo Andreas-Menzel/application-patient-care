@@ -1,47 +1,63 @@
-import { apiContract, PatientResponse } from "shared";
+import { apiContract, PatientDbToResponseSchema } from "shared";
 import { s } from "../server.js";
+import { createPatient, deletePatientById, getAllPatients, getPatientById, updatePatientById } from "../services/patients.service.js";
+import { errorToHttpResponse } from "../utils/error-response.js";
 
-
-// Sample data for now
-const patients: PatientResponse[] = [
-    {
-        id: 0,
-        firstName: "Andreas",
-        lastName: "Menzel",
-        gender: "male"
-    },
-    {
-        id: 0,
-        firstName: "John",
-        lastName: "Doe",
-        gender: "male"
-    }
-];
 
 export const patientRouter = s.router(apiContract.patients, {
-  getPatients: async () => {
-    return {
-      status: 200,
-      body: patients,
-    };
-  },
-  getPatient: async ({ params: { id } }) => {
-    const pId = Number(id);
-    if (patients[pId] === undefined) {
+  getPatients: async ({ req }) => {
+    try {
+      const patients = await getAllPatients();
       return {
-        status: 404,
-        body: {
-          type: 'https://httpstatuses.com/404',
-          title: 'Patient Not Found',
-          status: 404,
-          detail: `No patient found with id: ${id}`,
-          instance: `/patients/${id}`,
-        },
-      };
+        status: 200,
+        body: patients.map((pat) => PatientDbToResponseSchema.parse(pat))
+      }
+    } catch(error) {
+      return errorToHttpResponse(error, req);
     }
-    return {
-      status: 200,
-      body: patients[pId],
-    };
+  },
+  getPatient: async ({ params: { id }, req }) => {
+    try {
+      const patient = await getPatientById(Number(id));
+      return {
+        status: 200,
+        body: PatientDbToResponseSchema.parse(patient)
+      }
+    } catch(error) {
+      return errorToHttpResponse(error, req);
+    }
+  },
+  createPatient: async ({ body, req }) => {
+    try {
+      const patient = await createPatient(body);
+      return {
+        status: 201,
+        body: PatientDbToResponseSchema.parse(patient)
+      };
+    } catch(error) {
+      return errorToHttpResponse(error, req);
+    }
+  },
+  updatePatient: async ({ params: { id }, body, req }) => {
+    try {
+      const patient = updatePatientById(Number(id), body);
+      return {
+        status: 200,
+        body: PatientDbToResponseSchema.parse(patient)
+      };
+    } catch(error) {
+      return errorToHttpResponse(error, req);
+    }
+  },
+  deletePatient: async ({ params: { id }, req }) => {
+    try {
+      await deletePatientById(Number(id));
+      return {
+        status: 204,
+        body: null
+      };
+    } catch(error) {
+      return errorToHttpResponse(error, req);
+    }
   }
 });
