@@ -5,8 +5,8 @@
 [x] 1. Setup main project structure
 [x] 2. Setup frontend with Vue.js, etc.
 [x] 3. Setup backend with node, express, etc.
-[ ] 4. Create required classes/types/etc. for patients
-[ ] 5. Create basic api endpoints (GET, POST, PUT, DELETE)
+[x] 4. Create required classes/types/etc. for patients
+[x] 5. Create basic api endpoints (GET, POST, PUT, DELETE)
 [ ] 6. Add basic pages to add/view/update patient data
 [ ] 7. Setup docker
 [ ] 8. Setup Caddy for HTTPS
