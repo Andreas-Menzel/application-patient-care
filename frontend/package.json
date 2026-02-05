@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
     "@tanstack/vue-query": "^4.43.0",
     "@ts-rest/vue-query": "^3.52.1",
     "shared": "*",
-    "vue": "^3.5.24"
+    "tailwindcss": "^4.1.18",
+    "vue": "^3.5.24",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
