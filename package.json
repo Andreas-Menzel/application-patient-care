@@ -5,9 +5,9 @@
   "private": true,
   "type": "module",
   "workspaces": [
+    "shared",
     "frontend",
-    "backend",
-    "shared"
+    "backend"
   ],
   "scripts": {
     "dev": "npm run dev --workspaces --if-present",
