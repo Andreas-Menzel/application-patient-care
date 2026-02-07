@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useQueryClient } from '@tanstack/vue-query';
 import { api } from '../../api/client';
-import type { PatientResponse } from 'shared';
+import type { PatientUpdate } from 'shared';
 
 const route = useRoute();
+const router = useRouter();
 const queryClient = useQueryClient();
 const patientId = computed(() => route.params.id as string);
+const isCreating = computed(() => !patientId.value);
 
 const { data, isLoading, error } = api.patients.getPatient.useQuery(
     ['patient', patientId],
@@ -16,7 +18,7 @@ const { data, isLoading, error } = api.patients.getPatient.useQuery(
 );
 
 const patient = computed(() => data.value?.body);
-const editingPatient = ref<PatientResponse | null>(null);
+const editingPatient = ref<PatientUpdate | null>(null);
 
 const getInitials = (firstName: string, lastName: string) =>
     `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -26,6 +28,25 @@ const isSaving = ref(false);
 const saveError = ref<string | null>(null);
 
 const { mutateAsync: updatePatient } = api.patients.updatePatient.useMutation();
+const { mutateAsync: createPatient } = api.patients.createPatient.useMutation();
+const { mutateAsync: deletePatientMutation } = api.patients.deletePatient.useMutation();
+
+const isDeleting = ref(false);
+
+// Initialize create mode
+watch(isCreating, (creating) => {
+    if (creating) {
+        editActive.value = true;
+        editingPatient.value = {
+            firstName: '',
+            lastName: '',
+            gender: 'male',
+            email: null,
+            phone: null,
+            mobile: null,
+        };
+    }
+}, { immediate: true });
 
 function activateEdit() {
     editActive.value = true;
@@ -40,24 +61,54 @@ async function saveChanges() {
     saveError.value = null;
 
     try {
-        const response = await updatePatient({
-            params: { id: patientId.value },
-            body: {
-                firstName: editingPatient.value.firstName,
-                lastName: editingPatient.value.lastName,
-                gender: editingPatient.value.gender,
-                email: editingPatient.value.email,
-                phone: editingPatient.value.phone,
-                mobile: editingPatient.value.mobile,
-            },
-        });
+        if (isCreating.value) {
+            if (!editingPatient.value.firstName || !editingPatient.value.lastName || !editingPatient.value.gender) {
+                const missingFields = [];
+                if (!editingPatient.value.firstName) missingFields.push('first name');
+                if (!editingPatient.value.lastName) missingFields.push('last name');
+                if (!editingPatient.value.gender) missingFields.push('gender');
+                
+                saveError.value = "The following fields are required: " + missingFields.join(', ') + ".";                return;
+            }
 
-        if (response.status === 200) {
-            editActive.value = false;
-            queryClient.invalidateQueries({ queryKey: ['patient', patientId] });
-            queryClient.invalidateQueries({ queryKey: ['patients'] });
+            const response = await createPatient({
+                body: {
+                    firstName: editingPatient.value.firstName,
+                    lastName: editingPatient.value.lastName,
+                    gender: editingPatient.value.gender,
+                    email: editingPatient.value.email ?? null,
+                    phone: editingPatient.value.phone ?? null,
+                    mobile: editingPatient.value.mobile ?? null,
+                },
+            });
+
+            if (response.status === 201) {
+                editActive.value = false;
+                queryClient.invalidateQueries({ queryKey: ['patients'] });
+                router.push(`/patient/${response.body.id}`);
+            } else {
+                saveError.value = 'Failed to create patient';
+            }
         } else {
-            saveError.value = 'Failed to save changes';
+            const response = await updatePatient({
+                params: { id: patientId.value },
+                body: {
+                    firstName: editingPatient.value.firstName,
+                    lastName: editingPatient.value.lastName,
+                    gender: editingPatient.value.gender,
+                    email: editingPatient.value.email,
+                    phone: editingPatient.value.phone,
+                    mobile: editingPatient.value.mobile,
+                },
+            });
+
+            if (response.status === 200) {
+                editActive.value = false;
+                queryClient.invalidateQueries({ queryKey: ['patient', patientId] });
+                queryClient.invalidateQueries({ queryKey: ['patients'] });
+            } else {
+                saveError.value = 'Failed to save changes';
+            }
         }
     } catch (e) {
         saveError.value = 'An error occurred while saving';
@@ -69,6 +120,30 @@ async function saveChanges() {
 function discardChanges() {
     editActive.value = false;
     saveError.value = null;
+}
+
+async function deletePatient() {
+    if (!confirm('Are you sure you want to delete this patient?')) return;
+
+    isDeleting.value = true;
+    saveError.value = null;
+
+    try {
+        const response = await deletePatientMutation({
+            params: { id: patientId.value },
+        });
+
+        if (response.status === 204) {
+            queryClient.invalidateQueries({ queryKey: ['patients'] });
+            router.push('/patients');
+        } else {
+            saveError.value = 'Failed to delete patient';
+        }
+    } catch (e) {
+        saveError.value = 'An error occurred while deleting';
+    } finally {
+        isDeleting.value = false;
+    }
 }
 </script>
 
@@ -83,32 +158,39 @@ function discardChanges() {
         Back to patients
     </router-link>
 
-    <div v-if="isLoading" class="text-center text-content-muted py-12">
+    <div v-if="!isCreating && isLoading" class="text-center text-content-muted py-12">
         Loading patient...
     </div>
 
-    <div v-else-if="error" class="text-center text-red-500 py-12">
+    <div v-else-if="!isCreating && error" class="text-center text-red-500 py-12">
         Error loading patient
     </div>
 
-    <template v-else-if="patient">
+    <template v-else-if="patient || isCreating">
         <div class="flex flex-row gap-12 justify-between items-center w-full p-9 bg-surface-card border-2 border-outline rounded-container">
             <div class="flex flex-row gap-12 items-center">
                 <div class="flex items-center justify-center w-28 h-28 rounded-full bg-brand-soft border-6 border-surface-primary shadow-xl">
-                    <span class="text-4xl font-bold text-brand">
-                        {{ getInitials(patient.firstName, patient.lastName) }}
+                    <span v-if="isCreating" class="text-4xl font-bold text-brand">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </span>
+                    <span v-else class="text-4xl font-bold text-brand">
+                        {{ getInitials(patient!.firstName, patient!.lastName) }}
                     </span>
                 </div>
 
                 <div class="flex flex-col gap-2">
                     <span class="text-xl font-bold text-content-main">
-                        {{ patient.firstName }} {{ patient.lastName }}
+                        <template v-if="isCreating">New Patient</template>
+                        <template v-else>{{ patient!.firstName }} {{ patient!.lastName }}</template>
                     </span>
 
-                    <div class="flex flex-row gap-3 text-content-muted">
-                        <span>ID: {{ patient.id }}</span>
+                    <div v-if="!isCreating" class="flex flex-row gap-3 text-content-muted">
+                        <span>ID: {{ patient!.id }}</span>
                         <span>-</span>
-                        <span>{{ patient.gender }}</span>
+                        <span>{{ patient!.gender }}</span>
                     </div>
                 </div>
             </div>
@@ -126,9 +208,10 @@ function discardChanges() {
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        {{ isSaving ? 'Saving...' : 'Save' }}
+                        {{ isSaving ? 'Saving...' : (isCreating ? 'Create' : 'Save') }}
                     </button>
                     <button
+                        v-if="!isCreating"
                         @click="discardChanges"
                         type="button"
                         class="flex items-center gap-2 text-content-main bg-surface-primary border border-outline shadow-xs font-medium leading-5 rounded-element text-sm px-4 py-2.5 focus:outline-none cursor-pointer hover:bg-surface-secondary transition-colors">
@@ -141,15 +224,21 @@ function discardChanges() {
                 </div>
                 <template v-else>
                     <button
+                        @click="deletePatient"
                         type="button"
-                        class="w-full flex items-center gap-2 text-red-600 bg-red-50 border border-red-200 shadow-xs font-medium leading-5 rounded-element text-sm px-4 py-2.5 focus:outline-none cursor-pointer hover:bg-red-100 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        :disabled="isDeleting"
+                        class="w-full flex items-center gap-2 text-red-600 bg-red-50 border border-red-200 shadow-xs font-medium leading-5 rounded-element text-sm px-4 py-2.5 focus:outline-none cursor-pointer hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <svg v-if="!isDeleting" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                             <line x1="10" y1="11" x2="10" y2="17"></line>
                             <line x1="14" y1="11" x2="14" y2="17"></line>
                         </svg>
-                        Delete
+                        <svg v-else class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        {{ isDeleting ? 'Deleting...' : 'Delete' }}
                     </button>
                     <button
                         @click="activateEdit"
@@ -192,7 +281,7 @@ function discardChanges() {
                             required />
                     </template>
                     <template v-else>
-                        <span class="text-content-main">{{ patient.firstName }}</span>
+                        <span class="text-content-main">{{ patient!.firstName }}</span>
                     </template>
                 </div>
 
@@ -211,7 +300,7 @@ function discardChanges() {
                             required />
                     </template>
                     <template v-else>
-                        <span class="text-content-main">{{ patient.lastName }}</span>
+                        <span class="text-content-main">{{ patient!.lastName }}</span>
                     </template>
                 </div>
 
@@ -232,7 +321,7 @@ function discardChanges() {
                         </select>
                     </template>
                     <template v-else>
-                        <span class="text-content-main">{{ patient.gender }}</span>
+                        <span class="text-content-main">{{ patient!.gender }}</span>
                     </template>
                 </div>
             </div>
@@ -259,7 +348,7 @@ function discardChanges() {
                     </template>
                     <template v-else>
                         <span class="text-content-main">
-                            {{ patient.email ?? '-' }}
+                            {{ patient!.email ?? '-' }}
                         </span>
                     </template>
                 </div>
@@ -279,7 +368,7 @@ function discardChanges() {
                     </template>
                     <template v-else>
                         <span class="text-content-main">
-                            {{ patient.phone ?? '-' }}
+                            {{ patient!.phone ?? '-' }}
                         </span>
                     </template>
                 </div>
@@ -299,14 +388,14 @@ function discardChanges() {
                     </template>
                     <template v-else>
                         <span class="text-content-main">
-                            {{ patient.mobile ?? '-' }}
+                            {{ patient!.mobile ?? '-' }}
                         </span>
                     </template>
                 </div>
             </div>
         </div>
 
-        <div class="h-fit flex flex-col bg-surface-card border-2 border-outline rounded-card overflow-hidden">
+        <div v-if="!isCreating" class="h-fit flex flex-col bg-surface-card border-2 border-outline rounded-card overflow-hidden">
             <div class="bg-surface-secondary p-3 pl-4">
                 <span class="font-bold text-content-main">
                     Upcoming Appointments

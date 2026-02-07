@@ -10,6 +10,7 @@ import PatientView from './components/pages/PatientView.vue'
 const routes = [
   { path: '/', component: HomeView },
   { path: '/patients', component: PatientsView },
+  { path: '/patients/new', component: PatientView },
   { path: '/patient/:id', component: PatientView },
   { path: '/patient', redirect: '/patients' },
 ]

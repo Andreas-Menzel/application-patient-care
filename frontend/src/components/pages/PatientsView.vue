@@ -15,9 +15,20 @@ const formatDate = (timestamp: number) =>
 
 <template>
 <div class="max-w-300 mx-auto">
-    
-    <!-- Search Section -->
-    
+
+    <!-- Header with Create Button -->
+    <div class="flex justify-end mb-6">
+        <router-link
+            to="/patients/new"
+            class="flex items-center gap-2 text-brand-foreground bg-brand border border-transparent shadow-xs font-medium leading-5 rounded-element text-sm px-4 py-2.5 hover:bg-brand-90 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Create patient
+        </router-link>
+    </div>
+
     <!-- Patient List -->
     <div class="w-full bg-surface-card border-2 border-outline rounded-card overflow-hidden shadow-sm">
         <div class="grid grid-cols-[2fr_1fr_1fr_1fr_60px] bg-surface-secondary px-6 py-4 border-b border-outline">
