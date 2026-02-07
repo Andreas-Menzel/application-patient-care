@@ -1,5 +1,5 @@
 import { AppError } from "../errors/index.js";
-import { ProblemDetails } from "../../../shared/src/schemas/common.schema.js"
+import { ProblemDetails } from "shared";
 import { Request } from "express";
 
 
