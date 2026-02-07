@@ -40,7 +40,7 @@ export const patientRouter = s.router(apiContract.patients, {
   },
   updatePatient: async ({ params: { id }, body, req }) => {
     try {
-      const patient = updatePatientById(Number(id), body);
+      const patient = await updatePatientById(Number(id), body);
       return {
         status: 200,
         body: PatientDbToResponseSchema.parse(patient)
