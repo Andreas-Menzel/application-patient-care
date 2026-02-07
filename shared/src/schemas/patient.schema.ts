@@ -1,10 +1,14 @@
 import {z} from "zod"
+import {isValidPhoneNumber} from "libphonenumber-js"
 
 export const PatientSchema = z.object({
     id: z.number(),
     firstName: z.string(),
     lastName: z.string(),
     gender: z.enum(["male", "female"]),
+    email: z.string().email().nullable(),
+    phone: z.string().refine(isValidPhoneNumber, "Invalid phone number").nullable(),
+    mobile: z.string().refine(isValidPhoneNumber, "Invalid phone number").nullable(),
     createdAt: z.number()
 });
 

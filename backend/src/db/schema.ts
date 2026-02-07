@@ -5,6 +5,9 @@ export const patients = sqliteTable('patients', {
     firstName: text('first_name').notNull(),
     lastName: text('last_name').notNull(),
     gender: text('gender', { enum: ['male', 'female'] }).notNull(), // TODO: use PatientSchema?
+    email: text('email'),
+    phone: text('phone'),
+    mobile: text('mobile'),
     createdAt: integer('created_at')
         .notNull()
         .$defaultFn(() => Date.now()),
