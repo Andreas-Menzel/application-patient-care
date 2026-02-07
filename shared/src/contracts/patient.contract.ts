@@ -1,6 +1,6 @@
 import {initContract} from '@ts-rest/core';
 import {z} from 'zod';
-import { PatientCreateSchema, PatientResponseSchema, PatientUpdateSchema } from '../schemas/patient.schema.js';
+import {PatientCreateSchema, PatientResponseSchema, PatientUpdateSchema} from '../schemas/patient.schema.js';
 import {ProblemDetailsSchema} from "../schemas/common.schema.js"
 
 
