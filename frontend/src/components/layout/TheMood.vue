@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<div class="w-screen h-150 relative">
+<div class="w-full h-150 relative">
     <img class="h-full w-full object-cover"
         src="../../assets/mood.png"
         alt="Patient Management Mood" />

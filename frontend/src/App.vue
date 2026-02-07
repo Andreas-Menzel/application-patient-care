@@ -5,7 +5,7 @@ import TheNavBar from './components/layout/TheNavBar.vue';
 </script>
 
 <template>
-  <div class="w-screen h-full bg-gray-100">
+  <div class="w-full h-full bg-gray-100">
     <TheNavBar />
     <TheMood />
     <div class="mt-12 mb-12">

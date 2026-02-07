@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<div class="w-screen p-3 bg-[#262626] text-white">
+<div class="w-full p-3 bg-[#262626] text-white">
     <div class="max-w-300 mx-auto pt-9 pb-9">
         <div class="flex flex-col gap-3">
             <p class="font-bold">Andreas Menzel</p>

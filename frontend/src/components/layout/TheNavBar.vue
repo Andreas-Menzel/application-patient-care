@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<div class="w-screen h-22 p-3 bg-white">
+<div class="w-full h-22 p-3 bg-white">
     <div class="h-full max-w-300 mx-auto flex flex-row gap-12 items-center">
         <img class="h-full w-auto object-contain"
             src="../../assets/company-logo.jpeg"
