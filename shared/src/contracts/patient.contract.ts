@@ -52,8 +52,9 @@ export const patientContract = c.router({
     deletePatient: {
         method: 'DELETE',
         path: '/:id',
+        body: c.noBody(),
         responses: {
-            204: null,
+            204: c.noBody(),
             404: ProblemDetailsSchema
         }
     }

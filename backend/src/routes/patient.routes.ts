@@ -54,7 +54,7 @@ export const patientRouter = s.router(apiContract.patients, {
       await deletePatientById(Number(id));
       return {
         status: 204,
-        body: null
+        body: undefined
       };
     } catch(error) {
       return errorToHttpResponse(error, req);
