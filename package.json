@@ -12,12 +12,24 @@
   "scripts": {
     "dev": "npm run dev --workspaces --if-present",
     "build": "npm run build --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "commit": "cz",
+    "release": "standard-version && npm run release:sync",
+    "release:sync": "node scripts/sync-versions.mjs",
+    "release:first": "standard-version --first-release && npm run release:sync"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   },
   "dependencies": {
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "standard-version": "^9.5.0",
     "typescript": "^5.5.3"
   }
 }
