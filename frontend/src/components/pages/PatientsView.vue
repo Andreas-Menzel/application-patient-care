@@ -36,12 +36,12 @@ const formatGender = (gender: string) => {
 
     <!-- Patient List -->
     <div class="w-full bg-surface-card border-2 border-outline rounded-card overflow-hidden shadow-sm">
-        <div class="grid grid-cols-[2fr_1fr_1fr_1fr_60px] bg-surface-secondary px-6 py-4 border-b border-outline">
+        <div class="grid grid-cols-[2fr_1fr_1fr_1fr_auto] bg-surface-secondary px-6 py-4 border-b border-outline">
             <span class="text-xs font-bold uppercase tracking-wider text-content-muted">Patient Name</span>
             <span class="text-xs font-bold uppercase tracking-wider text-content-muted">ID</span>
             <span class="text-xs font-bold uppercase tracking-wider text-content-muted">Gender</span>
             <span class="text-xs font-bold uppercase tracking-wider text-content-muted">Created</span>
-            <span class="text-xs font-bold uppercase tracking-wider text-content-muted text-center">Actions</span>
+            <span class="w-6"></span>
         </div>
         
         <div v-if="isLoading" class="px-6 py-8 text-center text-content-muted">
@@ -56,7 +56,7 @@ const formatGender = (gender: string) => {
             <router-link :to="'/patient/' + patient.id"
             v-for="patient in patients"
             :key="patient.id"
-            class="grid grid-cols-[2fr_1fr_1fr_1fr_60px] items-center px-6 py-4 border-b last:border-b-0 border-outline hover:bg-gray-50 transition-colors"
+            class="grid grid-cols-[2fr_1fr_1fr_1fr_auto] items-center px-6 py-4 border-b last:border-b-0 border-outline hover:bg-gray-50 transition-colors group"
             >
                 <div class="flex items-center gap-4">
                     <div class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-soft text-brand font-bold text-sm shrink-0">
@@ -73,11 +73,9 @@ const formatGender = (gender: string) => {
 
                 <span class="text-sm text-content-muted">{{ formatDate(patient.createdAt) }}</span>
 
-                <div class="flex justify-center">
-                    <button class="p-1 hover:bg-surface-secondary rounded-full transition-colors cursor-pointer text-content-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-                    </button>
-                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-content-muted group-hover:text-content-main transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
             </router-link>
         </div>
         
