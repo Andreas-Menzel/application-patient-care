@@ -5,6 +5,7 @@ export const patients = sqliteTable('patients', {
     firstName: text('first_name').notNull(),
     lastName: text('last_name').notNull(),
     gender: text('gender', { enum: ['male', 'female', 'diverse', 'not_specified'] }).notNull(),
+    birthDate: text('birth_date'),
     salutation: text('salutation', { enum: ['mr', 'mrs', 'ms', 'mx'] }),
     email: text('email'),
     phone: text('phone'),

@@ -1,0 +1,1 @@
+ALTER TABLE `patients` ADD `birth_date` text;

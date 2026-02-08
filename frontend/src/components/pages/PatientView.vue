@@ -34,6 +34,12 @@ const formatGender = (gender: string) => {
     return map[gender] ?? gender;
 };
 
+const formatBirthDate = (birthDate: string | null) => {
+    if (!birthDate) return '-';
+    const date = new Date(birthDate);
+    return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+};
+
 const editActive = ref(false);
 const isSaving = ref(false);
 const saveError = ref<string | null>(null);
@@ -52,6 +58,7 @@ watch(isCreating, (creating) => {
             firstName: '',
             lastName: '',
             gender: 'not_specified',
+            birthDate: null,
             salutation: null,
             email: null,
             phone: null,
@@ -88,6 +95,7 @@ async function saveChanges() {
                     firstName: editingPatient.value.firstName,
                     lastName: editingPatient.value.lastName,
                     gender: editingPatient.value.gender,
+                    birthDate: editingPatient.value.birthDate ?? null,
                     salutation: editingPatient.value.salutation ?? null,
                     email: editingPatient.value.email ?? null,
                     phone: editingPatient.value.phone ?? null,
@@ -109,6 +117,7 @@ async function saveChanges() {
                     firstName: editingPatient.value.firstName,
                     lastName: editingPatient.value.lastName,
                     gender: editingPatient.value.gender,
+                    birthDate: editingPatient.value.birthDate,
                     salutation: editingPatient.value.salutation,
                     email: editingPatient.value.email,
                     phone: editingPatient.value.phone,
@@ -361,6 +370,23 @@ async function deletePatient() {
                     </template>
                     <template v-else>
                         <span class="text-content-main">{{ formatGender(patient!.gender) }}</span>
+                    </template>
+                </div>
+
+                <hr class="border-0 h-0.5 bg-surface-secondary">
+
+                <div class="pl-1">
+                    <label for="birthDate" class="block mb-2.5 text-sm font-medium text-content-muted">
+                        Birth Date
+                    </label>
+                    <template v-if="editActive && editingPatient">
+                        <input type="date"
+                            id="birthDate"
+                            v-model="editingPatient.birthDate"
+                            class="bg-surface-primary border border-outline text-content-main text-sm rounded-element focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs" />
+                    </template>
+                    <template v-else>
+                        <span class="text-content-main">{{ formatBirthDate(patient!.birthDate) }}</span>
                     </template>
                 </div>
             </div>

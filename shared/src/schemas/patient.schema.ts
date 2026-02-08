@@ -6,6 +6,7 @@ export const PatientSchema = z.object({
     firstName: z.string(),
     lastName: z.string(),
     gender: z.enum(["male", "female", "diverse", "not_specified"]),
+    birthDate: z.string().date().nullable(),
     salutation: z.enum(["mr", "mrs", "ms", "mx"]).nullable(),
     email: z.string().email().nullable(),
     phone: z.string().refine(isValidPhoneNumber, "Invalid phone number").nullable(),
