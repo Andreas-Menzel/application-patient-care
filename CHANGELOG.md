@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.1](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.0...v0.0.1) (2026-02-08)
+
+
+### Build System
+
+* add deploy script and show version number in footer ([f20a4dd](https://github.com/Andreas-Menzel/application-patient-care/commit/f20a4ddae92821d25b2f34b9efa1dac03408f0be)), closes [#7](https://github.com/Andreas-Menzel/application-patient-care/issues/7)
+
 ## 0.0.0 (2026-02-08)
 
 
