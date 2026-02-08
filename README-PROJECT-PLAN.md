@@ -7,9 +7,9 @@
 [x] 3. Setup backend with node, express, etc.
 [x] 4. Create required classes/types/etc. for patients
 [x] 5. Create basic api endpoints (GET, POST, PUT, DELETE)
-[ ] 6. Add basic pages to add/view/update patient data
-[ ] 7. Setup docker
-[ ] 8. Setup Caddy for HTTPS
+[x] 6. Add basic pages to add/view/update patient data
+[x] 7. Setup docker
+[x] 8. Setup Caddy for HTTPS
 
 ## Detailed Plan
 

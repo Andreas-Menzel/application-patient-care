@@ -1,4 +1,4 @@
-# Dev-README - Architekture and Tech-Stack
+# Dev-README - Architecture and Tech-Stack
 
 This README file is aimed at developers of this application and should give a
 basic overview over the structure of the app and the used tech stack.
@@ -21,6 +21,8 @@ database (`backend/data/`), exclusively used by the backend server.
 - **Zod** for type safety
 - **Express** for the api route handlers
 - **Drizzle ORM** for database access (sqlite3 for now)
+- **@ts-rest/express** for type-safe API routing
+- **@ts-rest/open-api** for OpenAPI spec generation
 - **Swagger UI** for api documentation and testing
   (accessible under `<url>/api-docs`)
 
@@ -36,7 +38,8 @@ Including pages, modals, images, icons, etc.
 - **Vue.js** for SPA (routing is also managed by the Vue Router)
 - **TailwindCSS** for css styling
 - **Vite** as the project bundler
-- **Ts-Rest** for api definitions
+- **@ts-rest/vue-query** for type-safe API client
+- **TanStack Vue Query** for data fetching and caching
 
 ## Shared
 
@@ -52,3 +55,28 @@ This includes:
 
 - **TypeScript** for type safety
 - **Zod** for type safety
+- **@ts-rest/core** for API contract definitions
+- **libphonenumber-js** for phone number validation
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- npm 10+
+
+### Installation
+
+```bash
+npm install
+```
+
+### Running Locally
+
+```bash
+npm run dev
+```
+
+This starts all three workspaces (shared, backend, frontend) concurrently.
+The frontend is available at `http://localhost:5173` and proxies API requests
+to the backend at `http://localhost:3000`.

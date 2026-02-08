@@ -1,6 +1,6 @@
 # README
 
-This project contains multiple README files. The reason being to split the large amount of information into smaller junks.
+This project contains multiple README files. The reason being to split the large amount of information into smaller chunks.
 This makes it easier - especially for this prototype/exercise - to quickly find the information you seek.
 
 - `README-PROJECT-REQUIREMENTS.md`: The requirements that were given to me and define this project
