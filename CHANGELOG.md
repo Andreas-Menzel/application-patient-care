@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.1...v0.0.2) (2026-02-08)
+
+
+### Bug Fixes
+
+* auto-commit version changes in package.json ([9a699fa](https://github.com/Andreas-Menzel/application-patient-care/commit/9a699fa7db2ccd48b183053a7fd7f7152d44b84c))
+
 ### [0.0.1](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.0...v0.0.1) (2026-02-08)
 
 
