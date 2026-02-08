@@ -10,8 +10,10 @@
     "backend"
   ],
   "scripts": {
-    "dev": "npm run dev --workspaces --if-present",
+    "dev": "npm run build:shared && concurrently -n shared,backend,frontend -c blue,green,magenta \"npm run dev -w shared\" \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "dev:backend": "npm run build:shared && concurrently -n shared,backend -c blue,green \"npm run dev -w shared\" \"npm run dev -w backend\"",
     "build": "npm run build --workspaces --if-present",
+    "build:shared": "npm run build -w shared",
     "lint": "npm run lint --workspaces --if-present",
     "commit": "cz",
     "release": "standard-version",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "commitizen": "^4.3.1",
+    "concurrently": "^9.1.2",
     "cz-conventional-changelog": "^3.3.0",
     "standard-version": "^9.5.0",
     "typescript": "^5.5.3"

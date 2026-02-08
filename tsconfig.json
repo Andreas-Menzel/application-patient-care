@@ -7,14 +7,6 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "sourceMap": true,
-    "rootDir": "src",
-    "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {}
-  },
-  "include": [
-    "src",
-    "shared/src"
-  ]
+    "sourceMap": true
+  }
 }
