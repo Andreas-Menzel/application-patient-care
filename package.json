@@ -14,9 +14,8 @@
     "build": "npm run build --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "commit": "cz",
-    "release": "standard-version && npm run release:sync",
-    "release:sync": "node scripts/sync-versions.mjs",
-    "release:first": "standard-version --first-release && npm run release:sync",
+    "release": "standard-version",
+    "release:first": "standard-version --first-release",
     "deploy": "bash scripts/deploy.sh",
     "deploy:only": "bash scripts/deploy.sh --deploy-only"
   },

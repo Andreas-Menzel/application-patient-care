@@ -1,4 +1,10 @@
 {
+  "bumpFiles": [
+    { "filename": "package.json" },
+    { "filename": "shared/package.json" },
+    { "filename": "frontend/package.json" },
+    { "filename": "backend/package.json" }
+  ],
   "types": [
     {"type": "feat", "section": "Features"},
     {"type": "fix", "section": "Bug Fixes"},
