@@ -30,3 +30,15 @@ This may require additional logic on what to delete and what to anonymize.
 The caddy setup ensures encryption at transport. Since we are managing patient
 data, which includes highly personalized data, possibly including medical
 records, we should think about encryption of the data in the database.
+
+## Separate staging server
+
+We currently only have one environment for testing: local. We should create
+a staging server to test all features on a server with a domain, etc.
+
+- Add staging variables to `.env` and `.env.example`
+- Extend the `scripts/deploy.sh` script to allow for --staging, or
+  better: --production
+
+We could use `https://staging.patient-management.de` as the staging server and
+`https://patient-management.de` as the production server.
