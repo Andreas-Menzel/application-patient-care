@@ -16,7 +16,9 @@
     "commit": "cz",
     "release": "standard-version && npm run release:sync",
     "release:sync": "node scripts/sync-versions.mjs",
-    "release:first": "standard-version --first-release && npm run release:sync"
+    "release:first": "standard-version --first-release && npm run release:sync",
+    "deploy": "bash scripts/deploy.sh",
+    "deploy:only": "bash scripts/deploy.sh --deploy-only"
   },
   "config": {
     "commitizen": {
