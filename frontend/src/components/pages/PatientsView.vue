@@ -11,6 +11,11 @@ const getInitials = (firstName: string, lastName: string) =>
 
 const formatDate = (timestamp: number) =>
     new Date(timestamp).toLocaleDateString('de-DE');
+
+const formatGender = (gender: string) => {
+    const map: Record<string, string> = { male: 'Male', female: 'Female', diverse: 'Diverse', not_specified: 'Not specified' };
+    return map[gender] ?? gender;
+};
 </script>
 
 <template>
@@ -64,7 +69,7 @@ const formatDate = (timestamp: number) =>
 
                 <span class="text-sm text-content-muted">{{ patient.id }}</span>
 
-                <span class="text-sm text-content-muted">{{ patient.gender }}</span>
+                <span class="text-sm text-content-muted">{{ formatGender(patient.gender) }}</span>
 
                 <span class="text-sm text-content-muted">{{ formatDate(patient.createdAt) }}</span>
 

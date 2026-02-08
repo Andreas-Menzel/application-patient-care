@@ -23,6 +23,17 @@ const editingPatient = ref<PatientUpdate | null>(null);
 const getInitials = (firstName: string, lastName: string) =>
     `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
 
+const formatSalutation = (salutation: string | null) => {
+    if (!salutation) return '-';
+    const map: Record<string, string> = { mr: 'Mr.', mrs: 'Mrs.', ms: 'Ms.', mx: 'Mx.' };
+    return map[salutation] ?? salutation;
+};
+
+const formatGender = (gender: string) => {
+    const map: Record<string, string> = { male: 'Male', female: 'Female', diverse: 'Diverse', not_specified: 'Not specified' };
+    return map[gender] ?? gender;
+};
+
 const editActive = ref(false);
 const isSaving = ref(false);
 const saveError = ref<string | null>(null);
@@ -40,7 +51,8 @@ watch(isCreating, (creating) => {
         editingPatient.value = {
             firstName: '',
             lastName: '',
-            gender: 'male',
+            gender: 'not_specified',
+            salutation: null,
             email: null,
             phone: null,
             mobile: null,
@@ -76,6 +88,7 @@ async function saveChanges() {
                     firstName: editingPatient.value.firstName,
                     lastName: editingPatient.value.lastName,
                     gender: editingPatient.value.gender,
+                    salutation: editingPatient.value.salutation ?? null,
                     email: editingPatient.value.email ?? null,
                     phone: editingPatient.value.phone ?? null,
                     mobile: editingPatient.value.mobile ?? null,
@@ -96,6 +109,7 @@ async function saveChanges() {
                     firstName: editingPatient.value.firstName,
                     lastName: editingPatient.value.lastName,
                     gender: editingPatient.value.gender,
+                    salutation: editingPatient.value.salutation,
                     email: editingPatient.value.email,
                     phone: editingPatient.value.phone,
                     mobile: editingPatient.value.mobile,
@@ -190,7 +204,7 @@ async function deletePatient() {
                     <div v-if="!isCreating" class="flex flex-row gap-3 text-content-muted">
                         <span>ID: {{ patient!.id }}</span>
                         <span>-</span>
-                        <span>{{ patient!.gender }}</span>
+                        <span>{{ formatGender(patient!.gender) }}</span>
                     </div>
                 </div>
             </div>
@@ -269,6 +283,29 @@ async function deletePatient() {
 
             <div class="flex flex-col gap-3 p-3">
                 <div class="pl-1">
+                    <label for="salutation" class="block mb-2.5 text-sm font-medium text-content-muted">
+                        Salutation
+                    </label>
+                    <template v-if="editActive && editingPatient">
+                        <select
+                            id="salutation"
+                            v-model="editingPatient.salutation"
+                            class="bg-surface-primary border border-outline text-content-main text-sm rounded-element focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs">
+                            <option :value="null">-</option>
+                            <option value="mr">Mr.</option>
+                            <option value="mrs">Mrs.</option>
+                            <option value="ms">Ms.</option>
+                            <option value="mx">Mx.</option>
+                        </select>
+                    </template>
+                    <template v-else>
+                        <span class="text-content-main">{{ formatSalutation(patient!.salutation) }}</span>
+                    </template>
+                </div>
+
+                <hr class="border-0 h-0.5 bg-surface-secondary">
+
+                <div class="pl-1">
                     <label for="firstName" class="block mb-2.5 text-sm font-medium text-content-muted">
                         First Name
                     </label>
@@ -316,12 +353,14 @@ async function deletePatient() {
                             v-model="editingPatient.gender"
                             class="bg-surface-primary border border-outline text-content-main text-sm rounded-element focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs"
                             required>
-                            <option value="male">male</option>
-                            <option value="female">female</option>
+                            <option value="not_specified">Not specified</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="diverse">Diverse</option>
                         </select>
                     </template>
                     <template v-else>
-                        <span class="text-content-main">{{ patient!.gender }}</span>
+                        <span class="text-content-main">{{ formatGender(patient!.gender) }}</span>
                     </template>
                 </div>
             </div>
