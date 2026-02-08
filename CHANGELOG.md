@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.5...v0.0.6) (2026-02-08)
+
+
+### Features
+
+* add birth date to patient ([9e7148d](https://github.com/Andreas-Menzel/application-patient-care/commit/9e7148d8cfa49a54a859955611f60ee3fc8499ea))
+* add salutation and update gender ([ec500a8](https://github.com/Andreas-Menzel/application-patient-care/commit/ec500a8a5b32f62c371c65894a4d80fa38975a63))
+* Remove actions column on /patients page ([addd2bc](https://github.com/Andreas-Menzel/application-patient-care/commit/addd2bc9f13ffcb07a7edce90da331d12fbf294d))
+* rename discard button to cancel ([f246dab](https://github.com/Andreas-Menzel/application-patient-care/commit/f246daba895db5e99197ee546cdd4d010bdbe89f))
+
+
+### Bug Fixes
+
+* add statement breakpoints to db migrations ([6fa7b3d](https://github.com/Andreas-Menzel/application-patient-care/commit/6fa7b3d2aa0f1951c6c0b681ef405a3b3463c1f4))
+
+
+### Build System
+
+* fix npm run dev ([b307e07](https://github.com/Andreas-Menzel/application-patient-care/commit/b307e07cdb130c0d293c9c527346822bd28d2a90))
+* fix npm run dev ([d943d9d](https://github.com/Andreas-Menzel/application-patient-care/commit/d943d9df6e114b21567df846c27bbe406f0f8f6e))
+
 ### [0.0.5](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.4...v0.0.5) (2026-02-08)
 
 
