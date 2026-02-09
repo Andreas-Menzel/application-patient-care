@@ -6,15 +6,21 @@ import { createExpressEndpoints } from "@ts-rest/express";
 import { generateOpenApi } from "@ts-rest/open-api";
 import swaggerUi from "swagger-ui-express"
 import { apiRouter } from "./routes/api.routes.js";
+import { requestLoggerMiddleware } from "./middleware/request-logger.js";
+import { validationErrorHandler } from "./middleware/validation-error-handler.js";
+import { logger } from "./utils/logger.js";
 
 const app = express();
 
 // Setup middleware
 app.use(cors());
 app.use(express.json());
+app.use(requestLoggerMiddleware);
 
-// Attach all routers
-createExpressEndpoints(apiContract, apiRouter, app);
+// Attach all routers with validation error handler
+createExpressEndpoints(apiContract, apiRouter, app, {
+    requestValidationErrorHandler: validationErrorHandler
+});
 // ... auth, etc.
 
 // Serve static files
@@ -36,5 +42,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log("Server running on port 3000");
+    logger.info("Server running on port 3000");
 })

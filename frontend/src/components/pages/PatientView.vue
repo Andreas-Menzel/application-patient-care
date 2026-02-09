@@ -3,7 +3,7 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useQueryClient } from '@tanstack/vue-query';
 import { api } from '../../api/client';
-import type { PatientUpdate } from 'shared';
+import type { PatientUpdate, ProblemDetails } from 'shared';
 
 const route = useRoute();
 const router = useRouter();
@@ -108,7 +108,7 @@ async function saveChanges() {
                 queryClient.invalidateQueries({ queryKey: ['patients'] });
                 router.push(`/patient/${response.body.id}`);
             } else {
-                saveError.value = 'Failed to create patient';
+                saveError.value = (response.body as unknown as ProblemDetails).detail ?? 'Failed to create patient';
             }
         } else {
             const response = await updatePatient({
@@ -130,11 +130,12 @@ async function saveChanges() {
                 queryClient.invalidateQueries({ queryKey: ['patient', patientId] });
                 queryClient.invalidateQueries({ queryKey: ['patients'] });
             } else {
-                saveError.value = 'Failed to save changes';
+                saveError.value = (response.body as unknown as ProblemDetails).detail ?? 'Failed to save changes';
             }
         }
-    } catch (e) {
-        saveError.value = 'An error occurred while saving';
+    } catch (e: unknown) {
+        const message = e instanceof Error ? e.message : 'An error occurred while saving';
+        saveError.value = message;
     } finally {
         isSaving.value = false;
     }
