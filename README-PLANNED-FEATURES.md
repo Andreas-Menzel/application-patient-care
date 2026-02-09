@@ -42,3 +42,12 @@ a staging server to test all features on a server with a domain, etc.
 
 We could use `https://staging.patient-management.de` as the staging server and
 `https://patient-management.de` as the production server.
+
+## Add proper logging system
+
+The logging is currently very minimal. Extend it: add a logging middleware and
+general log messages to log errors, accesses, etc.
+
+## More user friendly error messages
+
+The user should not see "zod error" when entering an invalid phone number.
