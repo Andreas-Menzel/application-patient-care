@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.8...v0.0.9) (2026-02-09)
+
+
+### Features
+
+* mark as personal project and replace images ([4ca550b](https://github.com/Andreas-Menzel/application-patient-care/commit/4ca550bcd7598fa8e4c77af8e14a6541d795bab3))
+
 ### [0.0.8](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.7...v0.0.8) (2026-02-09)
 
 
