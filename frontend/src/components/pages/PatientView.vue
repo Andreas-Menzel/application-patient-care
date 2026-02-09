@@ -134,8 +134,14 @@ async function saveChanges() {
             }
         }
     } catch (e: unknown) {
-        const message = e instanceof Error ? e.message : 'An error occurred while saving';
-        saveError.value = message;
+        // ts-rest throws the response object for non-2xx responses
+        if (e && typeof e === 'object' && 'body' in e) {
+            const body = (e as { body: ProblemDetails }).body;
+            saveError.value = body.detail ?? 'Failed to save';
+        } else {
+            const message = e instanceof Error ? e.message : 'An error occurred while saving';
+            saveError.value = message;
+        }
     } finally {
         isSaving.value = false;
     }
