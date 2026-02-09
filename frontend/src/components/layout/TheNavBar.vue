@@ -18,6 +18,10 @@
                 Github
             </a>
         </div>
+
+        <span class="ml-auto text-sm bg-amber-100 text-amber-800 px-3 py-1 rounded">
+            This is a <b>personal</b> and temporary project.
+        </span>
     </div>
 </div>
 </template>
