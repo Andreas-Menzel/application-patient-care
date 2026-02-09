@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.7...v0.0.8) (2026-02-09)
+
+
+### Features
+
+* add basic content to home page ([daebdf2](https://github.com/Andreas-Menzel/application-patient-care/commit/daebdf2b0399bce57f49ddda00a4bc1879de02da)), closes [#12](https://github.com/Andreas-Menzel/application-patient-care/issues/12)
+* change page title and favicon ([3b641ac](https://github.com/Andreas-Menzel/application-patient-care/commit/3b641ac6274f9fb7abcfcd13df23f29e149d93aa)), closes [#11](https://github.com/Andreas-Menzel/application-patient-care/issues/11)
+
 ### [0.0.7](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.6...v0.0.7) (2026-02-09)
 
 
