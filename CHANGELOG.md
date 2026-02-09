@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.6...v0.0.7) (2026-02-09)
+
+
+### Features
+
+* add logging ([1460ed2](https://github.com/Andreas-Menzel/application-patient-care/commit/1460ed2c9371bc4775e7df3e9d28f342cb4222cc)), closes [#1](https://github.com/Andreas-Menzel/application-patient-care/issues/1)
+
+
+### Bug Fixes
+
+* show error in frontend ([2de39f7](https://github.com/Andreas-Menzel/application-patient-care/commit/2de39f758b2c03afeedaf03314dfd6cdbc8f79fb)), closes [#10](https://github.com/Andreas-Menzel/application-patient-care/issues/10)
+
 ### [0.0.6](https://github.com/Andreas-Menzel/application-patient-care/compare/v0.0.5...v0.0.6) (2026-02-08)
 
 
